@@ -1,0 +1,26 @@
+{% load static %}
+<div class="md-5">
+    <nav class="navbar bg-body-tertiary navbar-expand-sm" role="navigation">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}">Рога и копыта</a>
+            <ul class="nav navbar-nav navbar-left">
+                {% for elem in tabs %}
+                    <li>
+                        <a href="{% url elem.0 %}" 
+                            class="nav-link {% if elem == selected %} active {% endif %}"> 
+                            {{ elem.1 }} 
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#login_modal">
+                        Вход для сотрудников
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </nav>  
+</div>
+{% include "client/login.html" %}

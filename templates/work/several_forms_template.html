@@ -1,0 +1,26 @@
+{% extends 'work/base_work.html' %}
+{% load static %}
+{% load work_tags %}
+
+{% block content %}
+    <form class="table-responsive" method="post" {% if multipart %} enctype="multipart/form-data" {% endif %}>
+        {% csrf_token %}
+        <table class="table table-striped">
+            {% for form in forms %}
+                {% if names %}
+                    <th class="text-center h2 bg-secondary" colspan="2"> 
+                        {{ names|list_get:forloop.counter0 }}
+                    </th> 
+                {% endif %}
+                <tr class="form-error">{{ form.non_field_errors }}</tr>
+                {% for field in form %}
+                    <tr>
+                        <td><label class="form-label" for="{{ f.id_for_label }}">{{ field.label }}: </label></td>
+                        <td class="justify-content-center {% if field.errors %} bg-danger {% endif %}"> {{ field }} {{ field.errors }}</td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+        </table>
+        <button type="submit" class="btn btn-primary mb-3 offset-5 col-2"> Отправить </button>
+    </form>
+{% endblock %}

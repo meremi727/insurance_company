@@ -1,0 +1,176 @@
+{% extends 'work/base_work.html' %}
+{% load static %}
+{% load work_tags %}
+
+{% block content %}
+    <details>
+        <summary> Информация из заявки </summary>
+        <table class="table table-responsive table-striped w-auto">
+            <tr>
+                <td> Номер договора </td>
+                <td> № {{ ticket.contract.id }} </td>
+            </tr>
+            <tr>
+                <td> Кто принимал заявку </td>
+                <td> {{ ticket.employee.get_fio }} </td>
+            </tr>
+            <tr>
+                <td> Дата поступления заявки </td>
+                <td> {{ ticket.date_created }} </td>
+            </tr>
+            <tr>
+                <td> Содержание заявки </td>
+                <td><textarea readonly width="100%" height="100%" class="w-100"> {{ ticket.content }} </textarea></td>
+            </tr>
+            <tr>
+                <td> Скан подтверждающего документа </td>
+                <td height="700px" class="embed-responsive embed-responsive-1by1 justify-content-center w-100">
+                        <iframe class="embed-responsive-item w-100 h-100" src="/media/{{ ticket.proofs }}"></iframe>
+                </td>
+            </tr>
+        </table>
+    </details>
+    <details>
+        <summary> Информация о договоре </summary>
+        <table class="table table-responsive table-striped w-auto">
+            <tr>
+                <td> Клиент </td>
+                <td> {{ ticket.contract.client.get_fio }} </td>
+            </tr>
+            <tr>
+                <td> Статус договора </td>
+                <td> {{ ticket.contract.get_status_display }} </td>
+            </tr>
+            <tr>
+                <td> Дата оформления договора </td>
+                <td> {{ ticket.contract.date_created }} </td>
+            </tr>
+            <tr>
+                <td> Срок страхования </td>
+                <td> {{ ticket.contract.period }} </td>
+            </tr>
+            <tr>
+                <td> Вид страхования </td>
+                <td> {{ ticket.contract.get_contract_type_display }} </td>
+            </tr>
+            <tr>
+                <td> Стоимость договора </td>
+                <td> {{ ticket.contract.cost }} </td>
+            </tr>
+            <tr>
+                <td> Страховая сумма </td>
+                <td> {{ ticket.contract.insurance_sum }} </td>
+            </tr>
+            <tr><td colspan=2 class="text-decoration-underline text-center"> Информация о страхуемом объекте </td></tr>
+            <tr>
+                <td colspan=2>
+                    <table class="table table-responsive table-striped w-auto">
+                        {% if ticket.contract.insurance_object|get_type == 'House' %}
+                            <tr>
+                                <td> Площадь </td>
+                                <td> {{ ticket.contract.insurance_object.square }} </td>
+                            </tr>
+                            <tr>
+                                <td> Адрес </td>
+                                <td> {{ ticket.contract.insurance_object.address }} </td>
+                            </tr>
+                            <tr>
+                                <td> Скан технического плана </td>
+                                <td height="700px" class="embed-responsive embed-responsive-1by1 justify-content-center w-100">
+                                    <iframe class="embed-responsive-item w-100 h-100" src="/media/{{ ticket.contract.insurance_object.scan_tech_plan }}"></iframe>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> Скан документа, подтверждающего право владения </td>
+                                <td height="700px" class="embed-responsive embed-responsive-1by1 justify-content-center w-100">
+                                    <iframe class="embed-responsive-item w-100 h-100" src="/media/{{ ticket.contract.insurance_object.scan_doc_owner }}"></iframe>
+                                </td>
+                            </tr>
+                        {% else %} 
+                            <tr colspan="2"> Персональные данные </tr>
+                            <tr>
+                                <td> Фамилия </td>
+                                <td> {{ ticket.contract.insurance_object.person.first_name }} </td>
+                            </tr>
+                            <tr>
+                                <td> Имя </td>
+                                <td> {{ ticket.contract.insurance_object.person.middle_name }} </td>
+                            </tr>
+                            <tr>
+                                <td> Отчество </td>
+                                <td> {{ ticket.contract.insurance_object.person.last_name }} </td>
+                            </tr>
+                            <tr>
+                                <td> Дата рождения </td>
+                                <td> {{ ticket.contract.insurance_object.person.date_of_birth }} </td>
+                            </tr>
+                            <tr>
+                                <td> Пол </td>
+                                <td> {{ ticket.contract.insurance_object.person.get_gender_display }} </td>
+                            </tr>
+                            <tr>
+                                <td> Телефон </td>
+                                <td> {{ ticket.contract.insurance_object.person.phone }} </td>
+                            </tr>
+                            <tr colspan="2"> Паспортные данные </tr>
+                            <tr>
+                                <td> Серия </td>
+                                <td> {{ ticket.contract.insurance_object.pasport.series }} </td>
+                            </tr>
+                            <tr>
+                                <td> Номер </td>
+                                <td> {{ ticket.contract.insurance_object.pasport.number }} </td>
+                            </tr>
+                            <tr>
+                                <td> Дата выдачи </td>
+                                <td> {{ ticket.contract.insurance_object.pasport.date_of_issue }} </td>
+                            </tr>
+                            <tr>
+                                <td> Кем выдан </td>
+                                <td> {{ ticket.contract.insurance_object.pasport.who_issued }} </td>
+                            </tr>
+                            <tr>
+                                <td> Код подразделения </td>
+                                <td> {{ ticket.contract.insurance_object.pasport.who_issued_code }} </td>
+                            </tr>
+                            <tr>
+                                <td> Скан </td>
+                                <td height="700px" class="embed-responsive embed-responsive-1by1 justify-content-center w-100">
+                                    <iframe class="embed-responsive-item w-100 h-100" src="/media/{{ ticket.contract.insurance_object.scan }}"></iframe>
+                                </td>
+                            </tr>
+                        {% endif %} 
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td> Кто заключал </td>
+                <td> {{ ticket.contract.employee.get_fio }} </td>
+            </tr>
+            <tr>
+                <td> Скан договора </td>
+                <td height="700px" class="embed-responsive embed-responsive-1by1 justify-content-center w-100">
+                    <iframe class="embed-responsive-item w-100 h-100" src="/media/{{ ticket.contract.scan }}"></iframe>
+                </td>
+            </tr>
+        </table>
+    </details>
+    <form method="post">
+        {% csrf_token %}
+        <table class="table table-responsive table-striped">
+            <tr>
+                <td> Результат </td>
+                <td> {{ form.result }} </td>
+            </tr>
+            <tr>
+                <td> Сумма страховой выплаты </td>
+                <td> {{ form.sum }} </td>
+            </tr>
+            <tr>
+                <td> Основание </td>
+                <td> {{ form.content }} </td>
+            </tr>
+            <tr class="justify-content-end"><td colspan="2"><input type="submit" class="btn btn-success"></td></tr>
+        </table>
+    </form>
+{% endblock %}

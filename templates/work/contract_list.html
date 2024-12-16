@@ -1,0 +1,49 @@
+{% extends 'work/base_work.html' %}
+{% load static %}
+{% load work_tags %}
+
+{% block content %}
+    <script>
+        function do_selected_action(select_tag)
+        {
+            val = select_tag.getAttribute('contract_id')
+            if (select_tag.value !== "Действия")
+                window.location.href = select_tag.value.replace('9999', val); 
+        } 
+    </script>
+    <table class="table table-responsive table-striped">
+        <thead>
+            <th> № </th>
+            <th> Статус </th>
+            <th> Клиент </th>
+            <th> Дата заключения </th>
+            <th> Срок страхования </th>
+            <th> Вид страхования </th>
+            <th> Стоимость </th>
+            <th> Страховая сумма </th>
+            <th> Кто заключил </th>
+            <th> Действия </th>
+            <th> Ссылка на документ </th>
+        </thead>
+        {% for item in contracts %}
+        <tr>
+            <td> {{ item.id }} </td>
+            <td> {{ item.get_status_display }} </td>
+            <td> {{ item.client.get_fio }} </td>
+            <td> {{ item.date_created }} </td>
+            <td> {{ item.period }} лет </td>
+            <td> {{ item.get_contract_type_display }} </td>
+            <td> {{ item.cost }} </td>
+            <td> {{ item.insurance_sum }} </td>
+            <td> {{ item.employee }} </td>
+            <td> 
+                <select onchange="do_selected_action(this);" contract_id="{{ item.id }}">
+                    <option selected> Действия </option>
+                    <option value="{% url 'terminate_contract' id='9999'%}"> Расторгнуть </option>
+                </select> 
+            </td>
+            <td><a href="../media/{{ item.scan }}"> Скачать </a></td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Договор №{{ contract.id }}</title>
+</head>
+
+<body>
+    <h1> Страховой договор №{{ contract.id }} </h1>
+    <table>
+        <tr>
+            <td> Вид страхования: </td>
+            <td> {{ contract.get_contract_type_display }} </td>
+        </tr>
+        <tr>
+            <td> Срок страхования (в годах): </td>
+            <td> {{ contract.period }} </td>
+        </tr>
+        <tr>
+            <td> Страховая сумма: </td>
+            <td> {{ contract.insurance_sum }} руб. </td>
+        </tr>
+        <tr>
+            <td> Стоимость: </td>
+            <td> {{ contract.cost }} руб. </td>
+        </tr>
+        <tr>
+            <td> Дата оформления: </td>
+            <td> {{ contract.date_created }} </td>
+        </tr>
+    </table>
+
+    <h2> Информация о клиенте </h2>
+    <h3> Персональные данные </h3>
+    <table>
+        <tr>
+            <td> Фамилия: </td>
+            <td> {{ contract.client.person.first_name }} </td>
+        </tr>
+        <tr>
+            <td> Имя: </td>
+            <td> {{ contract.client.person.middle_name }} </td>
+        </tr>
+        <tr>
+            <td> Отчество: </td>
+            <td> {{ contract.client.person.last_name }} </td>
+        </tr>
+        <tr>
+            <td> Дата рождения: </td>
+            <td> {{ contract.client.person.date_of_birth }} </td>
+        </tr>
+        <tr>
+            <td> Пол: </td>
+            <td> {{ contract.client.person.get_gender_display }} </td>
+        </tr>
+        <tr>
+            <td> Телефон: </td>
+            {% if contract.client.person.phone %} 
+                <td> {{ contract.client.person.phone }} </td> 
+            {% else %}
+                <td> - </td> 
+            {% endif %}
+        </tr>
+    </table>
+
+    <h3> Паспортные данные </h3>
+    <table>
+        <tr>
+            <td> Серия: </td>
+            <td> {{ contract.client.pasport.series }} </td>
+        </tr>
+        <tr>
+            <td> Номер: </td>
+            <td> {{ contract.client.pasport.number }} </td>
+        </tr>
+        <tr>
+            <td> Дата выдачи: </td>
+            <td> {{ contract.client.pasport.date_of_issue }} </td>
+        </tr>
+        <tr>
+            <td> Кем выдан: </td>
+            <td> {{ contract.client.pasport.who_issued }} </td>
+        </tr>
+        <tr>
+            <td> Код подразделения: </td>
+            <td> {{ contract.client.pasport.who_issued_code }} </td>
+        </tr>
+    </table>
+
+    <h2> Информация о страхуемом объекте (субьекте)</h2>
+    {% if contract.contract_type == 'house' %}
+    <table>
+        <tr>
+            <td> Площадь: </td>
+            <td> {{ contract.insurance_object.square }} кв. м.</td>
+        </tr>
+        <tr>
+            <td> Адрес: </td>
+            <td> {{ contract.insurance_object.address }} </td>
+        </tr>
+    </table>
+    {% else %}
+    <table>
+        <tr>
+            <td> Фамилия: </td>
+            <td> {{ contract.insurance_object.person.first_name }} </td>
+        </tr>
+        <tr>
+            <td> Имя: </td>
+            <td> {{ contract.insurance_object.person.middle_name }} </td>
+        </tr>
+        <tr>
+            <td> Отчество: </td>
+            <td> {{ contract.insurance_object.person.last_name }} </td>
+        </tr>
+        <tr>
+            <td> Дата рождения: </td>
+            <td> {{ contract.insurance_object.person.date_of_birth }} </td>
+        </tr>
+        <tr>
+            <td> Пол: </td>
+            <td> {{ contract.insurance_object.person.get_gender_display }} </td>
+        </tr>
+        <tr>
+            <td> Телефон: </td>
+            {% if contract.insurance_object.person.phone %} 
+                <td> {{ contract.insurance_object.person.phone }} </td> 
+            {% else %}
+                <td> - </td> 
+            {% endif %}
+        </tr>
+        <tr>
+            <td> Паспортные данные </td>
+        </tr>
+        <tr>
+            <td> Серия: </td>
+            <td> {{ contract.insurance_object.pasport.series }} </td>
+        </tr>
+        <tr>
+            <td> Номер: </td>
+            <td> {{ contract.insurance_object.pasport.number }} </td>
+        </tr>
+        <tr>
+            <td> Дата выдачи: </td>
+            <td> {{ contract.insurance_object.pasport.date_of_issue }} </td>
+        </tr>
+        <tr>
+            <td> Кем выдан: </td>
+            <td> {{ contract.insurance_object.pasport.who_issued }} </td>
+        </tr>
+        <tr>
+            <td> Код подразделения: </td>
+            <td> {{ contract.insurance_object.pasport.who_issued_code }} </td>
+        </tr>
+    </table>
+    {% endif %}
+<br> <br> <br>
+    <table cols="3">
+        <tr>
+            <td><h3 style="display: inline;"> Ответственный: </h3></td> 
+            <td> {{ contract.employee.person.get_fio}} </td>
+            <td> Подпись: __________________ </td>
+        </tr>
+        <tr>
+            <td><h3 style="display: inline;"> Клиент: </h3></td>
+            <td> {{ contract.client.person.get_fio}} </td>
+            <td> Подпись: __________________ </td>
+        </tr>
+    </table>
+</body>
+
+</html>

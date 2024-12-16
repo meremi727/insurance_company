@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load client_side_tags %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block header %} 
+    {% show_client_menu %}
+{% endblock %}
+    
+{% block footer %}
+    ОАО "Рога и копыта". ©️Все права защищены. 2024 г.
+{% endblock %}

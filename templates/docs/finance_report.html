@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% if is_detailed %}
+            Подробный финансовый отчет за период с {{ start }} по {{ end }}
+        {% else %}
+            Краткий финансовый отчет за период с {{ start }} по {{ end }}
+        {% endif %}
+    </title>
+    <style type="text/css">
+        h1 {
+            text-align: center;
+            font-size: 26pt;
+        }
+
+        table {
+            margin-left: auto;
+            margin-right: auto;
+            border-collapse:separate; 
+            border-spacing: 1em 1.5em;
+        }
+
+        tfoot > tr {
+            font-size: 40pt;
+            text-decoration: underline;
+        }
+
+        td {
+            font-size: 20pt;
+        }
+
+        .val_cell {
+            font-size: 18pt;
+        }
+    </style>
+</head>
+<body>
+    <h1>
+        {% if is_detailed %}
+            Подробный финансовый отчет за период с {{ start }} по {{ end }}
+        {% else %}
+            Краткий финансовый отчет за период с {{ start }} по {{ end }}
+        {% endif %}
+    </h1>
+    <table>
+        <tfoot>
+            <tr>
+                <td>Итого </td>
+                <td> {{ total }} рублей </td>
+            </tr>
+        </tfoot>
+        <tbody>
+            {% if is_detailed %}
+                <tr>
+                    <td> Количество новых договоров: </td>
+                    <td class="val_cell"> {{ contracts }} </td>
+                </tr>
+                <tr>
+                    <td> С сумарным доходом: </td>
+                    <td class="val_cell"> {{ profit }} рублей </td>
+                </tr>
+                <tr>
+                    <td> Количество страховых случаев: </td>
+                    <td class="val_cell"> {{ incidents }} </td>
+                </tr>
+                <tr>
+                    <td> С сумарным размером страховых выплат: </td>
+                    <td class="val_cell"> {{ waste }} рублей </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td> Доход: </td>
+                    <td class="val_cell"> {{ profit }} рублей </td>
+                </tr>
+                <tr>
+                    <td> Расход: </td>
+                    <td class="val_cell"> {{ waste }} рублей </td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</body>
+</html>

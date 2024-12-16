@@ -1,0 +1,36 @@
+{% extends "work/base_work.html" %}
+{% load i18n %}
+
+{% block content %}
+    <div>
+        {% if extra.title %} <p class="h1 d-flex justify-content-start"> {{ extra.title }} </p> {% endif %}
+        <p class="d-flex justify-content-end"> Шаг {{ wizard.steps.step1 }} из {{ wizard.steps.count }}</p>
+    </div>
+    <form action="" method="post" class="table-responsive" {% if multipart %} enctype='multipart/form-data' {% endif %}>
+        {% csrf_token %}
+        <table class="table table-striped">
+            {% if wizard.form.forms %}
+                {{ wizard.form.management_form }}
+                {% for form in wizard.form.forms %}
+                {{ form.as_table }}
+                {% endfor %}
+            {% else %}
+                {{ wizard.management_form }}
+                {{ wizard.form.as_table }}
+            {% endif %}
+        </table>
+        {% if wizard.steps.prev %}
+            <div class="col offset-1 col-1 d-inline">
+                <!-- <button class="btn btn-secondary me-5" name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}" formnovalidate> Начало </button> -->
+                <button class="btn btn-secondary" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}" formnovalidate> Назад </button>
+            </div>
+            <div class="col offset-8 col-1 d-inline">
+                <input type="submit" class="btn btn-success" value="{% if wizard.steps.current == wizard.steps.last %}Отправить{% else %}Далее{% endif %}" />
+            </div>
+        {% else %}
+        <div class="col offset-10 col-1">
+            <input type="submit" class="btn btn-success" value="{% if wizard.steps.current == wizard.steps.last %}Отправить{% else %}Далее{% endif %}" />
+        </div>
+        {% endif %}
+    </form>
+{% endblock %}

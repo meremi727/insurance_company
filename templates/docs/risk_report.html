@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Рисковый финансовый отчет за период с {{ data.start }} по {{ data.end }} </title>
+    <style type="text/css">
+        h1 {
+            text-align: center;
+            font-size: 26pt;
+        }
+
+        table {
+            margin-left: auto;
+            margin-right: auto;
+            border-collapse:separate; 
+            border-spacing: 1em 1.5em;
+        }
+
+        tfoot > tr {
+            font-size: 40pt;
+            text-decoration: underline;
+        }
+
+        td {
+            font-size: 20pt;
+        }
+
+        .val_cell {
+            font-size: 18pt;
+        }
+    </style>
+</head>
+<body>
+    <h1> Рисковый финансовый отчет за период с {{ data.start }} по {{ data.end }} </h1>
+    {{ data }}
+</body>
+</html>

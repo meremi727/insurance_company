@@ -1,0 +1,17 @@
+{% extends 'work/base_work.html' %}
+{% load static %}
+
+{% block content %}
+    <div>
+        <p class="h1 d-flex justify-content-start"> Отправка извещений клиентам </p>
+    </div>
+    <form action="" method="post" class="table table-responsive table-striped">
+        {% csrf_token %}
+        <table class="table table-striped">
+                {{ form.as_table }}
+        </table>
+        <div class="col offset-5 col-1">
+            <input type="submit" class="btn btn-success" value="Отправить" />
+        </div>
+    </form>
+{% endblock %}

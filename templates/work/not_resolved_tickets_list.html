@@ -1,0 +1,40 @@
+{% extends 'work/base_work.html' %}
+{% load static %}
+
+{% block content %}
+    <script>
+        function do_selected_action(select_tag)
+        {
+            selected_option_element = select_tag.options[select_tag.selectedIndex]
+            if (selected_option_element.getAttribute("url") !== "Действия")
+                show_permission_denied_toast_when_no_perms(selected_option_element)
+        } 
+    </script>
+    <table class="table table-responsive table-striped">
+        <tr>
+            <th> Номер заявки </th>
+            <th> Договор </th>
+            <th> Дата регистрации </th>
+            <th> Кто принял заявку </th>
+            <th> Содержимое </th>
+            <th> Подтверждающий документ </th>
+            <th> Действия </th>
+        </tr>
+        {% for item in tickets %}
+        <tr>
+            <td> {{ item.id }} </td>
+            <td> {{ item.contract }} </td>
+            <td> {{ item.date_created }} </td>
+            <td> {{ item.employee.get_fio }} </td>
+            <td> {{ item.content }} </td>
+            <td><a href="../media/{{ item.proofs }}"> Скачать </a></td>
+            <td> 
+                <select onchange="do_selected_action(this);" ticket_id="{{ item.id }}">
+                    <option selected url="Действия"> Действия </option>
+                    <option url="{% url 'resolve_incident_ticket' id='9999'%}"> Рассмотреть </option>
+                </select> 
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

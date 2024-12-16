@@ -1,0 +1,81 @@
+{% load static %}
+{% load work_tags %}
+
+{# Подключаем скрипт показа уведомления об отказе в доступе и сам шаблон уведомления #}
+{% include 'work/permision_denied_toast.html' %}
+{% include 'work/success_toast.html' %}
+{% include 'work/error_toast.html' %}
+
+<script>
+    window.onload = function() {
+        const result = '{{ toast.result }}'
+        message = '{{ toast.message }}'
+        if (result == 'success') {
+            show_success(message)
+        }
+        else if (result == 'error'){
+            show_error(message)
+        }
+    }
+</script>
+
+<div class="md-5">
+    <nav class="navbar bg-body-tertiary navbar-expand" role="navigation">
+        <div class="container-fluid">
+            <div class="nav-brand">
+                <img src="{% static 'favicon.ico' %}" alt="brand icon" width="64" height="64">
+                <a class="navbar-brand" href="{% url 'home' %}">Рога и копыта</a>
+            </div>
+            <ul class="nav navbar-nav navbar-left">
+                {% for tab in tabs.items %}
+                    {% if tab.1|get_type == 'dict' %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle {% if selected in tab.1.items.keys %} active text-info {% endif %}" href="#" role="button" 
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ tab.1.title }}
+                            </a> 
+                            <ul class="dropdown-menu">
+                                {% for k, v in tab.1.items.items %}
+                                    {% if k|startswith:"-" %}
+                                        {% if v is not None %}
+                                            <li class="dropdown-header text-center mb-0 pb-0"> {{ v }} </li>
+                                        {% endif %}
+                                        <li><hr class="dropdown-divider mt-0"></li>
+                                    {% else %}
+                                    <li class="nav-item">
+                                        <a url="{% url k %}" href="#" onclick="show_permission_denied_toast_when_no_perms(this)"
+                                            class="nav-link {% if k == selected %} active text-info {% endif %}"> 
+                                            {{ v }} 
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% else %}
+                        {% if tab.1|startswith:"-" %}
+                            <li><hr class="dropdown-divider"></li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a url="{% url tab.0 %}" href="#" onclick="show_permission_denied_toast_when_no_perms(this)" 
+                                    class="nav-link {% if tab.0 == selected %} active text-info {% endif %}"> 
+                                    {{ tab.1 }} 
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="m-2">
+                    <p> {{ request.user.get_fio }} {{ request.user.get_groups }}</p>
+                </li>
+                <li class="">
+                    <a href="{% url 'logout' %}" class="btn btn-outline-danger">
+                        Выход
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>  
+</div>
